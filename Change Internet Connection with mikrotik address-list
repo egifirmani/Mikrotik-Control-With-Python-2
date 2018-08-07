@@ -15,8 +15,8 @@ import paramiko
 # Main definition - constants
 menu_actions = {}
 
-ip = "192.168.65.65"
-port = 25900
+ip = "xxx.xxx.xxx.xxx" #Mikrotik IP
+port = 22 #ssh port
 
 
 
