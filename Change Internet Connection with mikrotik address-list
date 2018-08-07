@@ -15,9 +15,8 @@ import paramiko
 # Main definition - constants
 menu_actions = {}
 
-ip = "xxx.xxx.xxx.xxx" #Mikrotik IP
-port = 22 #ssh port
-
+ip = "xxx.xxx.xxx.xxx" #IP Mikrotik
+port = 22 #Port SSH
 
 
 # =======================
@@ -51,6 +50,8 @@ def login():
 
 
 def status():
+    print "Loading..."
+    time.sleep(1)
     stdin, stdout, stderr = ssh_client.exec_command("ip firewall address-list print where comment=\"LANNebula\" \n")
     koneksi_lan = stdout.readlines()[3].split()[0]
     stdin, stdout, stderr = ssh_client.exec_command("ip firewall address-list print where comment=\"WIFINebula\" \n")
@@ -60,8 +61,8 @@ def status():
            "+ Status:\n" + \
            "+ ------ \n" + \
            "+ Koneksi LAN  saat ini via: " + koneksi_lan + "\n" + \
-           "+ Koneksi WIFI saat ini via: " + koneksi_wifi + "\n" \
-                                                            "+++++++++++++++++++++++++++++++++++++++++++++\n\n"
+           "+ Koneksi WIFI saat ini via: " + koneksi_wifi + "\n" + \
+           "+++++++++++++++++++++++++++++++++++++++++++++\n\n"
 
 
 # Main menu
@@ -171,38 +172,51 @@ def menu2():
     exec_menu2(choice)
     return
 
+
 # mikrotik function
 def l2biznet():
     try:
         ssh_client.exec_command("/ip firewall address-list remove [find address=\"192.168.68.0/24\"] \n")
-        ssh_client.exec_command("/ip firewall address-list add address=192.168.68.0/24 list=Biznet_Dedicated comment=LANNebula \n")
+        time.sleep(1)
+        ssh_client.exec_command(
+            "/ip firewall address-list add address=192.168.68.0/24 list=Biznet_Dedicated comment=\"LANNebula\" \n")
     except:
         return False
     return
+
 
 def l2astinet():
     try:
         ssh_client.exec_command("/ip firewall address-list remove [find address=\"192.168.68.0/24\"] \n")
-        ssh_client.exec_command("/ip firewall address-list add address=192.168.68.0/24 list=Astinet_Networks comment=LANNebula \n")
+        time.sleep(1)
+        ssh_client.exec_command(
+            "/ip firewall address-list add address=192.168.68.0/24 list=Astinet_Networks comment=\"LANNebula\" \n")
     except:
         return False
     return
+
 
 def w2biznet():
     try:
         ssh_client.exec_command("/ip firewall address-list remove [find address=\"192.168.67.0/24\"] \n")
-        ssh_client.exec_command("/ip firewall address-list add address=192.168.67.0/24 list=Biznet_Dedicated comment=WIFINebula \n")
+        time.sleep(1)
+        ssh_client.exec_command(
+            "/ip firewall address-list add address=192.168.67.0/24 list=Biznet_Dedicated comment=\"WIFINebula\" \n")
     except:
         return False
     return
 
+
 def w2astinet():
     try:
         ssh_client.exec_command("/ip firewall address-list remove [find address=\"192.168.67.0/24\"] \n")
-        ssh_client.exec_command("/ip firewall address-list add address=192.168.67.0/24 list=Astinet_Networks comment=WIFINebula \n")
+        time.sleep(1)
+        ssh_client.exec_command(
+            "/ip firewall address-list add address=192.168.67.0/24 list=Astinet_Networks comment=\"WIFINebula\" \n")
     except:
         return False
     return
+
 
 # Back to main menu
 def back():
@@ -234,7 +248,6 @@ menu_actions_1 = {
     '9': back,
     '0': exit,
 }
-
 
 menu_actions_2 = {
     '1': w2biznet,
